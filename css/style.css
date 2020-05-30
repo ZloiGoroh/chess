@@ -1,7 +1,27 @@
+*{
+	margin:0px;
+	padding:0px;
+	font-family:sans;
+	color:white;
+}
+
 .desk{
-	width:500px;
-	height:500px;
+	width:510px;
+	height:510px;
 	background-color:brown;
+		
+}
+
+body{
+	display:flex;
+	align-items:center;
+	justify-content:center;
+	height:100vh;
+}
+
+span{
+	font-size:15px;
+	line-height:20px;
 }
 
 
