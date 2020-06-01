@@ -5,10 +5,9 @@
 	<title>Document</title>
 	<link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
         <script src="js/vue.js"></script> 
-        <script src="js/script.js"></script> 
 </head>
 <body>
-	<div class="desk" id="chess">
+	<div class="desk">
 		<div class="letters">
 			<span>A</span>
 			<span>B</span>
@@ -30,8 +29,8 @@
 				<span>2</span>
 				<span>1</span>
 			</div>
-			<div class="cages">
-
+			<div class="cages" id="chess" v-html="grid">
+			
 			</div>
 			<div class="nums">
 				<span>8</span>
@@ -55,6 +54,7 @@
 			<span>H</span>
 		</div>	
 	</div>	
+        <script src="js/script.js"></script> 
 </body>
 </html>
 

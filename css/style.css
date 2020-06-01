@@ -51,8 +51,8 @@ span{
 	width: 480px;
 	height: 100%;
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-	grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr:
+	grid-template-columns: repeat(8, 1fr);
+	grid-template-rows: repeat(8, 1fr);
 }
 
 .black{
