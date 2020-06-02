@@ -4,7 +4,8 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
-        <script src="js/vue.js"></script> 
+    <script src="js/vue.js"></script> 
+    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 </head>
 <body>
 	<div class="desk">
@@ -29,7 +30,7 @@
 				<span>2</span>
 				<span>1</span>
 			</div>
-			<div class="cages" id="chess" v-html="grid">
+            <div class="cages" id="chess" v-html="grid" v-bind:style="{gridTemplateColumns:range, gridTemplateRows:range}">
 			
 			</div>
 			<div class="nums">
