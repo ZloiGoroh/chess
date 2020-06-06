@@ -51,19 +51,20 @@ span{
 	width: 480px;
 	height: 100%;
 	display: grid;
-	grid-template-columns: repeat(8, 1fr);
-	grid-template-rows: repeat(8, 1fr);
 }
 
 .black{
-	background: black;
+	background: #734222;
 }
 
 .white{
 	background: white;
 }
 
-
+img{
+	width: 60px;
+	height: 60px;
+}
 
 
 

@@ -4,56 +4,20 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" type="text/css" media="screen" href="css/style.css" />
-    <script src="js/vue.js"></script> 
-    <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+    	<script src="js/vue.js"></script> 
+    	<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+	<script src="js/data.js"></script>
 </head>
 <body>
-	<div class="desk">
-		<div class="letters">
-			<span>A</span>
-			<span>B</span>
-			<span>C</span>
-			<span>D</span>
-			<span>E</span>
-			<span>F</span>
-			<span>G</span>
-			<span>H</span>
-		</div>     
+	<div class="desk" id="chess">
+		<div class="letters" v-html="letters"> </div>     
 		<div class="mid">
-			<div class="nums">
-				<span>8</span>
-				<span>7</span>
-				<span>6</span>
-				<span>5</span>
-				<span>4</span>
-				<span>3</span>
-				<span>2</span>
-				<span>1</span>
+			<div class="nums" v-html="nums"> </div>
+           		<div class="cages" v-html="grid" v-bind:style="{gridTemplateColumns:range, gridTemplateRows:range}">
 			</div>
-            <div class="cages" id="chess" v-html="grid" v-bind:style="{gridTemplateColumns:range, gridTemplateRows:range}">
-			
-			</div>
-			<div class="nums">
-				<span>8</span>
-				<span>7</span>
-				<span>6</span>
-				<span>5</span>
-				<span>4</span>
-				<span>3</span>
-				<span>2</span>
-				<span>1</span>
-			</div>
+			<div class="nums" v-html="nums"> </div>
 		</div>
-		<div class="letters">
-			<span>A</span>
-			<span>B</span>
-			<span>C</span>
-			<span>D</span>
-			<span>E</span>
-			<span>F</span>
-			<span>G</span>
-			<span>H</span>
-		</div>	
+		<div class="letters" v-html="letters"> </div>	
 	</div>	
         <script src="js/script.js"></script> 
 </body>
