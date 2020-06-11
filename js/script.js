@@ -6,7 +6,8 @@ var deskFields = [];			//Matrix of the desk
 class Fields {
 	constructor(){
 		this.isFull = false,
-		this.content = {}
+		this.content = {},
+		this.isAllowed = false
 	}
 
 }
@@ -131,9 +132,14 @@ var positionFigures = function(){
 }
 
 
-
-
-
+var clickReaction = function(){
+	if (event.target.tagName == 'DIV'){
+		console.log("Вы тыкнули на пустую клетку");
+	}
+	else {
+		console.log('Вы тыкнули на фигуру');
+	}
+}
 
 
 
@@ -153,3 +159,7 @@ var game = new Vue({
 
 positionFigures();
 console.log(deskFields);
+
+document.querySelector('.cages').addEventListener("click", clickReaction);
+
+

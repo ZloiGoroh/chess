@@ -53,6 +53,10 @@ span{
 	display: grid;
 }
 
+.cages > div {
+	line-height: 0px;
+}
+
 .black{
 	background: #734222;
 }
