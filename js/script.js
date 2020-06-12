@@ -5,7 +5,6 @@ var deskFields = [];			//Matrix of the desk
 
 class Fields {
 	constructor(){
-		this.isFull = false,
 		this.content = {},
 		this.isAllowed = false
 	}
@@ -23,10 +22,9 @@ for (let i = 1; i < deskRange + 1; ++i){
 
 
 class Figures{
-        constructor(name, src, range, color, dirs, startX, startY){
+        constructor(name, src, range, color, dirs, startX, startY, number){
                 this.name = name;
                 this.texture = src;
-                this.range = range;
                 this.isWhite = color;
                 this.direction = dirs;
                 this.position = {
@@ -35,39 +33,80 @@ class Figures{
 			currentX : startX,
 			currentY : startY
 		};
+
+		if (this.isWhite){
+			this.ID = 'w' + number;	
+		} else {
+			this.ID = 'b' + number;
+		};
+
 		if (name == "king" || name == "pawn"){
                 	this.isMoved = false;
 		};
+
 		if (name == "king"){
 	        	this.isAttacked = false; 	
 		};
+
+		if (range == 'any'){
+			this.range = deskRange - 1;
+		} else {
+			this.range = range;
+		}
         }
 
-        moveFigure(){
-                
+        getCoords(time){
+		let coordstr = '';
+		if (time == 'new'){
+			coordstr=String(this.position.currentX) + String(this.position.currentY);
+		}
+		if (time == 'old'){
+			coordstr=String(this.position.lastPosX) + String(this.position.lastPosY);
+		}
+		return document.getElementById(coordstr)
         }
 
 	aim(){
-		
+		for (let dir in this.direction){
+			let access = true;
+			let nowAtX = this.position.currentX;
+			let nowAtY = this.position.currentY;
+			let i = 0;
+			while (access && i < this.range){
+				let goingToX = nowAtX + this.direction[dir][0];
+				let goingToY = nowAtY + this.direction[dir][1]
+				if (goingToX > 0 && 
+				    goingToY > 0 &&
+				    goingToX <= deskRange &&
+				    goingToY <= deskRange){
+					let aimedCage = deskFields[goingToX][goingToY];
+					if (aimedCage.content.isWhite == this.isWhite){
+						access = false;
+					} else {
+						nowAtX = goingToX;
+						nowAtY = goingToY;
+						deskFields[goingToX][goingToY].isAllowed = true;
+						if (aimedCage.content.name != null){
+							access = false;
+						}
+					}			
+				} else { 
+					access = false; 
+				}
+				++i;
+			}
+		}			
+		console.log(deskFields);
 	}
 
 	placeFigure(){
-		let coordinats = String(this.position.currentX) + String(this.position.currentY);
-		let el = document.getElementById(coordinats);
-		el.innerHTML = `<img src="${this.texture}">`	
-		deskFields[this.position.currentX][this.position.currentY] = {
-			isFull: true,
-			content: this
-		};
-		//deskFields[this.position.currentX][this.position.currentY].content = this;
+		let el = this.getCoords('new');
+		el.innerHTML = `<img src="${this.texture}" id="${this.ID}">`;
+		deskFields[this.position.currentX][this.position.currentY].content = this;
 		if (this.position.lastPosX != null && this.position.lastPosY != null){
-			let oldCoords = String(this.position.lastPosX) + String(this.position.lastPosY);
-			let oldEl = document.getElementById(oldCoords);
+			let oldEl = this.getCoords('old');
 			oldEl.innerHTML = "";
-			deskFields[this.position.lastPosX][this.position.posY] = {
-				isFull: false,
-				content: {}
-			};
+			deskFields[this.position.lastPosX][this.position.posY].content = null;
 		}
 	}
 }
@@ -123,21 +162,35 @@ var positionFigures = function(){
 
 	for (i in allFigures){
 		if (allFigures[i].isWhite){
-			whiteSide.push(new Figures(allFigures[i].name, allFigures[i].src, allFigures[i].range, allFigures[i].isWhite, allFigures[i].dirs, allFigures[i].startPosX, allFigures[i].startPosY));
+			whiteSide.push(new Figures(allFigures[i].name, allFigures[i].src, allFigures[i].range, allFigures[i].isWhite, allFigures[i].dirs, allFigures[i].startPosX, allFigures[i].startPosY, whiteSide.length));
 			whiteSide[whiteSide.length - 1].placeFigure();
-		} else {blackSide.push(new Figures(allFigures[i].name, allFigures[i].src, allFigures[i].range, allFigures[i].isWhite, allFigures[i].dirs, allFigures[i].startPosX, allFigures[i].startPosY));
+		} else {blackSide.push(new Figures(allFigures[i].name, allFigures[i].src, allFigures[i].range, allFigures[i].isWhite, allFigures[i].dirs, allFigures[i].startPosX, allFigures[i].startPosY, blackSide.length));
 			blackSide[blackSide.length - 1].placeFigure();
 		}
 	}	
 }
 
 
+var targetFig = null;
 var clickReaction = function(){
 	if (event.target.tagName == 'DIV'){
-		console.log("Вы тыкнули на пустую клетку");
+		if (targetFig != null){
+			targetFig.position.lastPosX = targetFig.position.currentX;
+			targetFig.position.lastPosY = targetFig.position.currentY;
+			targetFig.position.currentX = event.target.id[0];
+			targetFig.position.currentY = event.target.id[1];
+			targetFig.placeFigure();
+		}		
 	}
 	else {
-		console.log('Вы тыкнули на фигуру');
+		let targ = event.target.id;
+		if (targ[0] == 'w'){
+			targetFig = whiteSide[parseInt(targ.substr(1), 10)];
+		} else {
+			targetFig = blackSide[parseInt(targ.substr(1), 10)];
+		}
+		targetFig.aim();
+		console.log(targetFig);
 	}
 }
 
