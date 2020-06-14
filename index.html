@@ -13,7 +13,7 @@
 		<div class="letters" v-html="letters"> </div>     
 		<div class="mid">
 			<div class="nums" v-html="nums"> </div>
-           		<div class="cages" v-html="grid" v-bind:style="{gridTemplateColumns:range, gridTemplateRows:range}">
+           		<div class="cages" v-html="grid" v-bind:style="{gridTemplateColumns:range, gridTemplateRows:range}" @click="clickReaction">
 			</div>
 			<div class="nums" v-html="nums"> </div>
 		</div>

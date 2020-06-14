@@ -2,15 +2,15 @@ var deskRange = 8;      		//How big should be the desk (don't make it too big)
 var whiteSide = [];     		//Array of white figures
 var blackSide = [];     		//Array of black figures
 var deskFields = [];			//Matrix of the desk
+var targetFig = null;			//Figure that is clicked and would make a move
+var whiteMoves = true;			//Flag that would be changed according to side moving
 
 class Fields {
 	constructor(){
 		this.content = {},
 		this.isAllowed = false
 	}
-
 }
-
 
 for (let i = 1; i < deskRange + 1; ++i){
 	deskFields[i]=[];
@@ -19,14 +19,13 @@ for (let i = 1; i < deskRange + 1; ++i){
 	}
 }
 
-
-
 class Figures{
         constructor(name, src, range, color, dirs, startX, startY, number){
                 this.name = name;
                 this.texture = src;
                 this.isWhite = color;
                 this.direction = dirs;
+		this.isMoved = false;
                 this.position = {
 			lastPosX : null,
 			lastPosY : null,
@@ -40,10 +39,6 @@ class Figures{
 			this.ID = 'b' + number;
 		};
 
-		if (name == "king" || name == "pawn"){
-                	this.isMoved = false;
-		};
-
 		if (name == "king"){
 	        	this.isAttacked = false; 	
 		};
@@ -54,6 +49,8 @@ class Figures{
 			this.range = range;
 		}
         }
+	
+	//Supporting function. Returns cage in DOM of current or old position
 
         getCoords(time){
 		let coordstr = '';
@@ -96,8 +93,45 @@ class Figures{
 				++i;
 			}
 		}			
-		console.log(deskFields);
+		if (this.name == 'pawn'){
+			let pawnCoords = {
+				X: this.position.currentX,
+				Y: this.position.currentY
+			};
+			if (!this.isMoved  && deskFields[pawnCoords.X][pawnCoords.Y + 2 * this.direction[0][1]].content.name === undefined){	//First move of the pawn
+				deskFields[pawnCoords.X][pawnCoords.Y + 2 * this.direction[0][1]].isAllowed = true;				
+			}
+			if (deskFields[pawnCoords.X][pawnCoords.Y + this.direction[0][1]].content.name !== undefined){				//Don't allow pawn to hit forward
+				deskFields[pawnCoords.X][pawnCoords.Y + this.direction[0][1]].isAllowed = false;	
+			}
+			if (deskFields[pawnCoords.X + 1][pawnCoords.Y + this.direction[0][1]].content.isWhite != this.isWhite &&
+			    deskFields[pawnCoords.X + 1][pawnCoords.Y + this.direction[0][1]].content.name !== undefined){
+				deskFields[pawnCoords.X + 1][pawnCoords.Y + this.direction[0][1]].isAllowed = true;
+			}															//Allow pawns to hit on diagonals
+			if (deskFields[pawnCoords.X - 1][pawnCoords.Y + this.direction[0][1]].content.isWhite != this.isWhite &&
+			    deskFields[pawnCoords.X - 1][pawnCoords.Y + this.direction[0][1]].content.name !== undefined){
+				deskFields[pawnCoords.X - 1][pawnCoords.Y + this.direction[0][1]].isAllowed = true;
+			}
+		}
 	}
+
+	//Gives figure new position and writes previous position
+	//Also calls placeFigure method
+
+	moveFigure(X, Y){
+		this.position = {
+			lastPosX: this.position.currentX,
+			lastPosY: this.position.currentY,
+			currentX: X,
+			currentY: Y
+		};
+		this.isMoved = true;
+		this.placeFigure();
+		whiteMoves = !whiteMoves;
+	}
+
+
+	//Moves figure on new position and empty previous cage
 
 	placeFigure(){
 		let el = this.getCoords('new');
@@ -106,7 +140,7 @@ class Figures{
 		if (this.position.lastPosX != null && this.position.lastPosY != null){
 			let oldEl = this.getCoords('old');
 			oldEl.innerHTML = "";
-			deskFields[this.position.lastPosX][this.position.posY].content = null;
+			deskFields[this.position.lastPosX][this.position.lastPosY].content = {};
 		}
 	}
 }
@@ -138,6 +172,7 @@ var grid = function(){
 
 
 	//Making numbers on the top and the bottom of the desk, according to the range
+
 var nums = function(){
 	let tempNums = '';
 	for (let i = deskRange; i > 0; --i){
@@ -171,29 +206,14 @@ var positionFigures = function(){
 }
 
 
-var targetFig = null;
-var clickReaction = function(){
-	if (event.target.tagName == 'DIV'){
-		if (targetFig != null){
-			targetFig.position.lastPosX = targetFig.position.currentX;
-			targetFig.position.lastPosY = targetFig.position.currentY;
-			targetFig.position.currentX = event.target.id[0];
-			targetFig.position.currentY = event.target.id[1];
-			targetFig.placeFigure();
-		}		
-	}
-	else {
-		let targ = event.target.id;
-		if (targ[0] == 'w'){
-			targetFig = whiteSide[parseInt(targ.substr(1), 10)];
-		} else {
-			targetFig = blackSide[parseInt(targ.substr(1), 10)];
+var removePermission = function () {
+	for (let i = 1; i < deskRange + 1; ++i){
+		for (let j = 1; j < deskRange + 1; ++j){
+			deskFields[i][j].isAllowed = false;
 		}
-		targetFig.aim();
-		console.log(targetFig);
 	}
+	targetFig = null;
 }
-
 
 
 var game = new Vue({
@@ -205,14 +225,40 @@ var game = new Vue({
 		letters: letters()
 	},
 	methods: {
-		
+		clickReaction : function(){
+		if (event.target.tagName == 'DIV'){
+			let clickedPos = {
+				X: parseInt(event.target.id[0]),
+				Y: parseInt(event.target.id[1])
+			};
+			if (targetFig != null && deskFields[clickedPos.X][clickedPos.Y].isAllowed){
+				targetFig.moveFigure(clickedPos.X, clickedPos.Y);			//Should be changed for range >=10
+				removePermission();
+			} else {
+				removePermission();
+			}
+		} else {
+			let targ = event.target.id;
+			let clickedFigPos = {													//initializing clicked figure coordinates
+				X: parseInt(event.target.parentElement.id[0]),
+				Y: parseInt(event.target.parentElement.id[1])
+			};
+			if (targetFig != null && targetFig.ID[0] != targ[0] && deskFields[clickedFigPos.X][clickedFigPos.Y].isAllowed){		//eating figure
+				targetFig.moveFigure(clickedFigPos.X,clickedFigPos.Y);
+			} else {
+			   	removePermission();
+				if (targ[0] == 'w' && whiteMoves){
+					targetFig = whiteSide[parseInt(targ.substr(1), 10)];
+					targetFig.aim();
+				} else if (targ[0] == 'b' && !whiteMoves){
+						targetFig = blackSide[parseInt(targ.substr(1), 10)];
+						targetFig.aim();
+					}
+				}
+			}
+		}		
 	}
 });
 
 
 positionFigures();
-console.log(deskFields);
-
-document.querySelector('.cages').addEventListener("click", clickReaction);
-
-
