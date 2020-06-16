@@ -70,8 +70,14 @@ img{
 	height: 100%;
 }
 
+.cages img{
+	cursor:pointer;
+}
 
-
+.allowedCage{
+	box-shadow: inset 0px 0px 30px grey;
+	cursor: pointer;
+}
 
 
 

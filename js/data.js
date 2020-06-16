@@ -48,7 +48,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/bP.png",
 		isWhite : false,
-		range : 1,
+		range : 2,
 		dirs : [[0, -1]],
 		startPosX: 1,
 		startPosY: 7	
@@ -57,7 +57,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/bP.png",
 		isWhite : false,
-		range : 1,
+		range : 2,
 		dirs : [[0, -1]],
 		startPosX: 2,
 		startPosY: 7	
@@ -66,7 +66,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/bP.png",
 		isWhite : false,
-		range : 1,
+		range : 2,
 		dirs : [[0, -1]],
 		startPosX: 3,
 		startPosY: 7	
@@ -75,7 +75,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/bP.png",
 		isWhite : false,
-		range : 1,
+		range : 2,
 		dirs : [[0, -1]],
 		startPosX: 4,
 		startPosY: 7	
@@ -84,7 +84,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/bP.png",
 		isWhite : false,
-		range : 1,
+		range : 2,
 		dirs : [[0, -1]],
 		startPosX: 5,
 		startPosY: 7	
@@ -93,7 +93,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/bP.png",
 		isWhite : false,
-		range : 1,
+		range : 2,
 		dirs : [[0, -1]],
 		startPosX: 6,
 		startPosY: 7	
@@ -102,7 +102,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/bP.png",
 		isWhite : false,
-		range : 1,
+		range : 2,
 		dirs : [[0, -1]],
 		startPosX: 7,
 		startPosY: 7	
@@ -111,7 +111,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/bP.png",
 		isWhite : false,
-		range : 1,
+		range : 2,
 		dirs : [[0, -1]],
 		startPosX: 8,
 		startPosY: 7	
@@ -193,7 +193,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/wP.png",
 		isWhite : true,
-		range : 1,
+		range : 2,
 		dirs : [[0, 1]],
 		startPosX: 1,
 		startPosY: 2	
@@ -202,7 +202,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/wP.png",
 		isWhite : true,
-		range : 1,
+		range : 2,
 		dirs : [[0, 1]],
 		startPosX: 2,
 		startPosY: 2
@@ -211,7 +211,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/wP.png",
 		isWhite : true,
-		range : 1,
+		range : 2,
 		dirs : [[0, 1]],
 		startPosX: 3,
 		startPosY: 2	
@@ -220,7 +220,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/wP.png",
 		isWhite : true,
-		range : 1,
+		range : 2,
 		dirs : [[0, 1]],
 		startPosX: 4,
 		startPosY: 2	
@@ -229,7 +229,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/wP.png",
 		isWhite : true,
-		range : 1,
+		range : 2,
 		dirs : [[0, 1]],
 		startPosX: 5,
 		startPosY: 2	
@@ -238,7 +238,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/wP.png",
 		isWhite : true,
-		range : 1,
+		range : 2,
 		dirs : [[0, 1]],
 		startPosX: 6,
 		startPosY: 2	
@@ -247,7 +247,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/wP.png",
 		isWhite : true,
-		range : 1,
+		range : 2,
 		dirs : [[0, 1]],
 		startPosX: 7,
 		startPosY: 2	
@@ -256,7 +256,7 @@ var allFigures = [
 		name : "pawn",
 		src : "img/wP.png",
 		isWhite : true,
-		range : 1,
+		range : 2,
 		dirs : [[0, 1]],
 		startPosX: 8,
 		startPosY: 2	
